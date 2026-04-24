@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Вход в систему</title>
+    <meta charset="utf-8">
+    <style>
+        body { font-family: sans-serif; max-width: 400px; margin: 50px auto; padding: 20px; }
+        .form-group { margin: 15px 0; }
+        input { width: 100%; padding: 8px; box-sizing: border-box; }
+        button { padding: 10px 20px; background: #007bff; color: white; border: none; cursor: pointer; }
+        .sso-btn { background: #28a745; margin-top: 10px; }
+        .alert { padding: 10px; margin: 10px 0; border-radius: 4px; }
+        .alert-danger { background: #f8d7da; color: #721c24; }
+        .alert-success { background: #d4edda; color: #155724; }
+        .alert-warning { background: #fff3cd; color: #856404; }
+    </style>
+</head>
+<body>
+    <h2>🔐 Вход</h2>
+    
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="alert alert-{{ category }}">{{ message }}</div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
+    <form method="POST" action="/login">
+        <div class="form-group">
+            <label>Логин:</label>
+            <input type="text" name="username" required autocomplete="username">
+        </div>
+        <div class="form-group">
+            <label>Пароль:</label>
+            <input type="password" name="password" required autocomplete="current-password">
+        </div>
+        <button type="submit">Войти с паролем</button>
+    </form>
+
+    {% if platform == 'Windows' %}
+    <form method="POST" action="/login_auto" style="display:inline">
+        <button type="submit" class="sso-btn">⚡ Войти через Windows (SSO)</button>
+    </form>
+    {% endif %}
+
+    <script>
+        // Авто-сабмит SSO, если пользователь уже в домене (опционально)
+        // if (navigator.platform.indexOf('Win') !== -1) {
+        //     document.querySelector('.sso-btn').click();
+        // }
+    </script>
+</body>
+</html>
